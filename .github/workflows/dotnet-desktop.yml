@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      Solution_Name: SoftwareCopyrightSourceCodeCollector.sln
+      Project_Name: SoftwareCopyrightSourceCodeCollector.Desktop.csproj
 
     steps:
     - name: Checkout
@@ -36,7 +36,7 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     - name: Publish application
-      run: dotnet publish ${{ env.Solution_Name }} -c ${{ matrix.configuration }} --self-contained true  --runtime ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'ubuntu-latest' && 'linux-x64' || 'osx-x64' }}
+      run: dotnet publish ${{ env.Project_Name }} -c ${{ matrix.configuration }} --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'ubuntu-latest' && 'linux-x64' || 'osx-x64' }}
       env:
         Configuration: ${{ matrix.configuration }}
 

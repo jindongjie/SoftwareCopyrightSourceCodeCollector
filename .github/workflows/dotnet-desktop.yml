@@ -37,10 +37,10 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.os }}-build-${{ matrix.configuration }}-${{ github.run_id }}
-        path: |
-          **/bin/${{ matrix.configuration }}/net8.0/win-x64/publish/
-          **/bin/${{ matrix.configuration }}/net8.0/linux-x64/publish/
-          **/bin/${{ matrix.configuration }}/net8.0/osx-x64/publish/
+  uses: actions/upload-artifact@v4
+  with:
+    name: ${{ matrix.os }}-build-${{ matrix.configuration }}-${{ github.run_id }}
+    path: |
+      **/bin/${{ matrix.configuration }}/net8.0/win-x64/publish/
+      **/bin/${{ matrix.configuration }}/net8.0/linux-x64/publish/
+      **/bin/${{ matrix.configuration }}/net8.0/osx-x64/publish/

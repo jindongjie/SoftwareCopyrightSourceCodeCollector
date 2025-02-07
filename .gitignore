@@ -1,0 +1,48 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vscode/
+.vs/
+*.csproj.user
+*.dbmdl
+*.pfx
+*.publishsettings
+.project
+*.pidb
+*.scc
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/packages/
+*.nuspec
+packages.lock.json
+project.lock.json
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# StyleCop
+StyleCopReport.xml
+
+# Rider
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Others
+*.log
+*.vsmdi
+*.coverage
+*.coveragexml

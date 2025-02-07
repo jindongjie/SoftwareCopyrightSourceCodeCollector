@@ -1,0 +1,186 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Software_Copyright_Source_Code_Collector.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+             x:Class="Software_Copyright_Source_Code_Collector.Views.MainView"
+             x:DataType="vm:MainViewModel">
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainViewModel />
+	</Design.DataContext>
+	<TabControl >
+		<TabItem Header="导出文档">
+			<Grid ShowGridLines="False" RowDefinitions="Auto Auto Auto * Auto"   Margin="5">
+				<!-- 文件夹选择 -->
+				<Grid Grid.Row="0" ColumnDefinitions="* 2* *" Margin="0 0 0 10 ">
+					<TextBlock  HorizontalAlignment="Center" Grid.Column="0" VerticalAlignment="Center">选择文件夹路径：</TextBlock>
+					<TextBox Grid.Column="1" Text="{Binding SelectedFolder}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" MinWidth="150"  Margin="0 0 5 0"/>
+					<Button HorizontalAlignment="Center"  Grid.Column="2" Content="选择文件夹..." Command="{Binding BrowseFolderCommand}" />
+				</Grid>
+
+				<!-- 后缀名过滤 -->
+				<StackPanel  Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch"  Margin="0 0 0 10 ">
+					<TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center">文件类型(以英文分号分隔 例子“cs;json;js;cpp”)</TextBlock>
+					<TextBox Text="{Binding ChoseFileType}" Width="300"  HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2"/>
+					<Button Content="查询" Margin="5" Command="{Binding GetAllFilesCommand}"></Button>
+				</StackPanel>
+
+				<!-- 文件预览 -->
+				<HeaderedContentControl Grid.Row="2" Theme="{DynamicResource GroupBox}" Margin="0 0 0 10">
+					<HeaderedContentControl.Header>
+						<!-- ReSharper disable once Xaml.StyleClassNotFound -->
+						<TextBlock>
+							筛选文件预览<TextBlock Classes="Secondary" VerticalAlignment="Center" Margin="5 0 0 0" Text="{Binding SearchedTotalCount}"></TextBlock>
+						</TextBlock>
+					</HeaderedContentControl.Header>
+					<HeaderedContentControl.Content>
+					</HeaderedContentControl.Content>
+				</HeaderedContentControl>
+
+				<TreeDataGrid Grid.Row="3" Source="{Binding SearchedFileItemsOriginalSource}" />
+
+
+				<StackPanel  Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Center">
+					<StackPanel Orientation="Horizontal" Spacing="5" Margin="0 0 0 10">
+						<TextBlock  VerticalAlignment="Center">软件名称：</TextBlock>
+						<TextBox Text="{Binding SoftwareName}" MaxWidth="500"  MinWidth="100"></TextBox>
+						<TextBlock VerticalAlignment="Center">著作权人：</TextBlock>
+						<TextBox Text="{Binding SoftwareAuthor}"  MaxWidth="500"  MinWidth="100"></TextBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Spacing="5" Margin="0 0 0 10">
+						<TextBlock VerticalAlignment="Center">软件版本：</TextBlock>
+						<TextBox Text="{Binding SoftwareVersion}"  MaxWidth="500"  MinWidth="100"></TextBox>
+						<TextBlock VerticalAlignment="Center">前后保存页数(目前无效)：</TextBlock>
+						<TextBox Text="{Binding MaxPage}"  MaxWidth="500"  MinWidth="100"></TextBox>
+					</StackPanel>
+
+					<Button Content="导出docx" Command="{Binding ExportToDocxCommand}" />
+				</StackPanel>
+			</Grid>
+
+		</TabItem>
+		<TabItem Header="注册流程">
+
+			<ScrollViewer>
+				<StackPanel Margin="20">
+					<!-- 申请须知 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">申请须知</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								1. 申请人可自行或委托代理人办理计算机软件著作权登记。
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								2. 申请文件应保存一份，确保补正程序中内容一致。
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								3. 登陆中国版权保护中心官网的著作权登记系统，全程在线办理。
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								软件登记咨询电话:
+								<LineBreak/>
+								• 业务咨询：010—61090099
+								<LineBreak/>
+								• 进度查询：010—84195634
+								<LineBreak/>
+								• 证书查询：010—64097920
+								<LineBreak/>
+								• 补正查询：010—84195640
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								官网链接：
+								<Button Command="{Binding OpenUrlCommand}" CommandParameter="https://www.ccopyright.com.cn/index.php?optionid=1085">
+									中国版权保护中心关于软件著作权申请的公告
+								</Button>
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								4. 在线打印并签章申请确认页，上传扫描件（PDF格式），确保格式和内容一致。
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								5. 登记通知通过用户中心-消息中心以站内信方式发送，补正期限为30日。
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								6. 著作权转让需提交相关合同或协议原件的照片或扫描件。
+							</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								7. 上传文件要求清晰、完整，格式为PDF，确保内容可准确识别。
+							</TextBlock>
+						</StackPanel>
+					</Border>
+
+					<!-- 办理流程 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">办理流程</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								账号注册 → 实名认证 → 填报提交 → 登记机构受理 → 登记机构审查 → 取得登记证书
+							</TextBlock>
+						</StackPanel>
+					</Border>
+
+					<!-- 实名认证 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">实名认证</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								注册成功后，根据指引完成实名认证。
+							</TextBlock>
+						</StackPanel>
+					</Border>
+
+					<!-- 填报提交 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">填报提交</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								填写并上传申请材料，确认无误后提交。
+							</TextBlock>
+						</StackPanel>
+					</Border>
+
+					<!-- 登记机构受理 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">登记机构受理</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								材料符合要求则受理，存在问题需在30日内补正。
+							</TextBlock>
+						</StackPanel>
+					</Border>
+
+					<!-- 登记机构审查 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">登记机构审查</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								受理后60日内完成审查，符合规定则登记，不符合需补正。
+							</TextBlock>
+						</StackPanel>
+					</Border>
+
+					<!-- 取得登记证书 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">取得登记证书</TextBlock>
+							<TextBlock TextWrapping="Wrap" Margin="0 0 0 5">
+								登记完成后，可在用户中心下载电子证书。
+							</TextBlock>
+						</StackPanel>
+					</Border>
+				</StackPanel>
+			</ScrollViewer>
+
+		</TabItem>
+		<TabItem Header="开发者链接">
+			<StackPanel Margin="20">
+				<TextBlock Text="Github链接" FontWeight="Bold" Margin="0 0 10 0"/>
+				<Button Content="GitHub资料页" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/jindongjie"/>
+			</StackPanel>
+		</TabItem>
+		<TabItem Header="待开发..."></TabItem>
+	</TabControl>
+</UserControl>
+

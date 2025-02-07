@@ -41,7 +41,7 @@ jobs:
       
       - name: Publish Application for Windows
         run: |
-          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true -- "-p:PublishSingleFile=true" "-p:PublishReadyToRun=true" "-p:PublishTrimmed=true" --runtime win-x64
+          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true --runtime win-x64 -- -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishTrimmed=true
         env:
           Configuration: Release
 

@@ -34,7 +34,7 @@ jobs:
         dotnet-version: 9.0.x
 
     - name: Publish application
-      run: dotnet publish ${{ env.Project_Path }} -c ${{ matrix.configuration }} --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'ubuntu-latest' && 'linux-x64' || 'osx-x64' }}
+      run: dotnet publish ${{ env.Project_Path }} -c ${{ matrix.configuration }} --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ${{ matrix.runtime }}
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -52,6 +52,9 @@ jobs:
       if: github.event_name == 'release'
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: '**/bin/Release/net8.0/*/publish/*'
+        asset_path: |
+          **/bin/Release/net8.0/win-x64/publish/*
+          **/bin/Release/net8.0/linux-x64/publish/*
+          **/bin/Release/net8.0/osx-x64/publish/*
         asset_name: release-${{ matrix.os }}.zip
         asset_content_type: application/zip

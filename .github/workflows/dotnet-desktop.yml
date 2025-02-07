@@ -15,7 +15,6 @@ permissions:
   security-events: write
   statuses: write
 
-
 on:
   push:
     branches: [ "master" ]
@@ -42,8 +41,7 @@ jobs:
       
       - name: Publish Application for Windows
         run: |
-         dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
-            /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=true --runtime win-x64
+          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true -- -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishTrimmed=true --runtime win-x64
         env:
           Configuration: Release
 
@@ -101,7 +99,7 @@ jobs:
 
       - name: Archive Ubuntu Build Output
         run: zip -r release-ubuntu.zip **/bin/Release/net8.0/linux-x64/publish/
-
+      
       - name: Upload Build Artifacts (Ubuntu)
         uses: actions/upload-artifact@v4
         with:
@@ -116,7 +114,7 @@ jobs:
           asset_path: release-ubuntu.zip
           asset_name: release-ubuntu.zip
           asset_content_type: application/zip
-
+  
   build-macos:
     runs-on: macos-latest
     env:

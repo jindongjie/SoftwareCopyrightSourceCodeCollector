@@ -9,51 +9,95 @@ on:
     types: [created]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-        configuration: [Release]
-        runtime: [win-x64, linux-x64, osx-x64]
-
-    runs-on: ${{ matrix.os }}
-
+  build-windows:
+    runs-on: windows-latest
     env:
       Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
-
     - name: Publish application
-      run: dotnet publish ${{ env.Project_Path }} -c ${{ matrix.configuration }} --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ${{ matrix.runtime }}
+      run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime win-x64
       env:
-        Configuration: ${{ matrix.configuration }}
-
+        Configuration: Release
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.os }}-build-${{ matrix.configuration }}-${{ github.run_id }}
-        path: |
-          **/bin/${{ matrix.configuration }}/net8.0/win-x64/publish/
-          **/bin/${{ matrix.configuration }}/net8.0/linux-x64/publish/
-          **/bin/${{ matrix.configuration }}/net8.0/osx-x64/publish/
-
+        name: windows-build-${{ github.run_id }}
+        path: **/bin/Release/net8.0/win-x64/publish/
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       if: github.event_name == 'release'
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: |
-          **/bin/Release/net8.0/win-x64/publish/*
-          **/bin/Release/net8.0/linux-x64/publish/*
-          **/bin/Release/net8.0/osx-x64/publish/*
-        asset_name: release-${{ matrix.os }}.zip
+        asset_path: **/bin/Release/net8.0/win-x64/publish/*
+        asset_name: release-windows.zip
+        asset_content_type: application/zip
+
+  build-ubuntu:
+    runs-on: ubuntu-latest
+    env:
+      Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+    - name: Publish application
+      run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime linux-x64
+      env:
+        Configuration: Release
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ubuntu-build-${{ github.run_id }}
+        path: **/bin/Release/net8.0/linux-x64/publish/
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      if: github.event_name == 'release'
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: **/bin/Release/net8.0/linux-x64/publish/*
+        asset_name: release-ubuntu.zip
+        asset_content_type: application/zip
+
+  build-macos:
+    runs-on: macos-latest
+    env:
+      Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+    - name: Publish application
+      run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime osx-x64
+      env:
+        Configuration: Release
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-build-${{ github.run_id }}
+        path: **/bin/Release/net8.0/osx-x64/publish/
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      if: github.event_name == 'release'
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: **/bin/Release/net8.0/osx-x64/publish/*
+        asset_name: release-macos.zip
         asset_content_type: application/zip

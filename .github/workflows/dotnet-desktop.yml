@@ -35,7 +35,7 @@ jobs:
       if: runner.os == 'Windows'
       uses: microsoft/setup-msbuild@v2
 
-    - name: Install workloads
+    - name: Restore .NET workloads
       run: dotnet workload restore
 
     - name: Publish application

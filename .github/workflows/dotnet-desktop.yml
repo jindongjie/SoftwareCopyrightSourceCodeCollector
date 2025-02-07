@@ -17,9 +17,9 @@ permissions:
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
   release:
     types: [created]
 
@@ -33,22 +33,33 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-      
+
       - name: Publish Application for Windows
+        shell: pwsh
         run: |
-          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true --runtime win-x64 -- -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishTrimmed=true
-        env:
-          Configuration: Release
+          $args = @(
+            $env:Project_Path,
+            "-c", "Release",
+            "--self-contained", "true",
+            "--runtime", "win-x64",
+            "--",
+            "-p:PublishSingleFile=true",
+            "-p:PublishReadyToRun=true",
+            "-p:PublishTrimmed=true"
+          )
+          dotnet publish @args
 
       - name: Stop dotnet process
+        shell: pwsh
         run: taskkill /F /IM dotnet.exe
 
       - name: Archive Windows Build Output
+        shell: pwsh
         run: |
           $publishPath = Resolve-Path "**\bin\Release\net8.0\win-x64\publish\"
           if (-Not (Test-Path $publishPath)) {
@@ -81,12 +92,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-      
+
       - name: Publish Application for Ubuntu
         run: |
           dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
@@ -99,7 +110,7 @@ jobs:
 
       - name: Archive Ubuntu Build Output
         run: zip -r release-ubuntu.zip **/bin/Release/net8.0/linux-x64/publish/
-      
+
       - name: Upload Build Artifacts (Ubuntu)
         uses: actions/upload-artifact@v4
         with:
@@ -114,7 +125,7 @@ jobs:
           asset_path: release-ubuntu.zip
           asset_name: release-ubuntu.zip
           asset_content_type: application/zip
-  
+
   build-macos:
     runs-on: macos-latest
     env:
@@ -124,12 +135,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-      
+
       - name: Publish Application for macOS
         run: |
           dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
@@ -139,7 +150,7 @@ jobs:
 
       - name: Stop dotnet process
         run: pkill dotnet || true
-      
+
       - name: Archive macOS Build Output (Switch Directory)
         run: |
           # Locate the publish directory; adjust the glob pattern if needed.
@@ -151,7 +162,7 @@ jobs:
           cd "$PUBLISH_DIR"
           # Create zip file at the root of the workspace; adjust path if necessary.
           zip -r ../../../../release-macos.zip .
-      
+
       - name: Upload Build Artifacts (macOS)
         uses: actions/upload-artifact@v4
         with:

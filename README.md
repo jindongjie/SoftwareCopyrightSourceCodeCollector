@@ -1,4 +1,4 @@
-# 软件著作权源代码收集器
+# 软件著作权源代码收集器 [![.NET Core Desktop](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml)
 
 ## 项目简介
 

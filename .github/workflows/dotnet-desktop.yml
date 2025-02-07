@@ -52,6 +52,6 @@ jobs:
       if: github.event_name == 'release'
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: '**/bin/${{ matrix.configuration }}/net8.0/*/publish/'
+        asset_path: '**/bin/Release/net8.0/*/publish/*'
         asset_name: release-${{ matrix.os }}.zip
         asset_content_type: application/zip

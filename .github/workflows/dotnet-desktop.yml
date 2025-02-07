@@ -14,7 +14,7 @@ permissions:
   repository-projects: write
   security-events: write
   statuses: write
-
+  metadata: read
 
 on:
   push:
@@ -30,25 +30,27 @@ jobs:
     env:
       Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
     steps:
-      - name: Checkout
+      - name: Checkout Sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+      
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-
-      - name: Publish application
-        run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime win-x64
+      
+      - name: Publish Application for Windows
+        run: |
+          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
+            /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=true --runtime win-x64
         env:
           Configuration: Release
 
       - name: Stop dotnet process
         run: taskkill /F /IM dotnet.exe
 
-      - name: Archive Windows build output
+      - name: Archive Windows Build Output
         run: |
           $publishPath = Resolve-Path "**\bin\Release\net8.0\win-x64\publish\"
           if (-Not (Test-Path $publishPath)) {
@@ -57,7 +59,7 @@ jobs:
           }
           Compress-Archive -Path "$publishPath\*" -DestinationPath release-windows.zip
 
-      - name: Upload build artifacts
+      - name: Upload Build Artifacts (Windows)
         uses: actions/upload-artifact@v4
         with:
           name: windows-build-${{ github.run_id }}
@@ -77,28 +79,30 @@ jobs:
     env:
       Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
     steps:
-      - name: Checkout
+      - name: Checkout Sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+      
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-
-      - name: Publish application
-        run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime linux-x64
+      
+      - name: Publish Application for Ubuntu
+        run: |
+          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
+            /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=true --runtime linux-x64
         env:
           Configuration: Release
 
       - name: Stop dotnet process
         run: killall dotnet || true
 
-      - name: Archive Ubuntu build output
+      - name: Archive Ubuntu Build Output
         run: zip -r release-ubuntu.zip **/bin/Release/net8.0/linux-x64/publish/
 
-      - name: Upload build artifacts
+      - name: Upload Build Artifacts (Ubuntu)
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-build-${{ github.run_id }}
@@ -118,28 +122,39 @@ jobs:
     env:
       Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
     steps:
-      - name: Checkout
+      - name: Checkout Sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+      
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-
-      - name: Publish application
-        run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime osx-x64
+      
+      - name: Publish Application for macOS
+        run: |
+          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
+            /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=true --runtime osx-x64
         env:
           Configuration: Release
 
       - name: Stop dotnet process
         run: pkill dotnet || true
-
-      - name: Archive macOS build output
-        run: zip -r release-macos.zip **/bin/Release/net8.0/osx-x64/publish/
-
-      - name: Upload build artifacts
+      
+      - name: Archive macOS Build Output (Switch Directory)
+        run: |
+          # Locate the publish directory; adjust the glob pattern if needed.
+          PUBLISH_DIR=$(find . -type d -path "*/bin/Release/net8.0/osx-x64/publish" | head -n 1)
+          if [ -z "$PUBLISH_DIR" ]; then
+            echo "Publish directory not found!" && exit 1
+          fi
+          echo "Publishing from directory: $PUBLISH_DIR"
+          cd "$PUBLISH_DIR"
+          # Create zip file at the root of the workspace; adjust path if necessary.
+          zip -r ../../../../release-macos.zip .
+      
+      - name: Upload Build Artifacts (macOS)
         uses: actions/upload-artifact@v4
         with:
           name: macos-build-${{ github.run_id }}

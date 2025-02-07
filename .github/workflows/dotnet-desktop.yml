@@ -162,6 +162,7 @@ jobs:
           cd "$PUBLISH_DIR"
           # Create zip file at the root of the workspace; adjust path if necessary.
           zip -r ../../../../release-macos.zip .
+          cp ../../../../release-macos.zip $GITHUB_WORKSPACE/release-macos.zip
 
       - name: Upload Build Artifacts (macOS)
         uses: actions/upload-artifact@v4

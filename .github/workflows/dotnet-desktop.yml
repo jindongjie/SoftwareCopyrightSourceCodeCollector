@@ -14,96 +14,126 @@ jobs:
     env:
       Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
-    - name: Publish application
-      run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime win-x64
-      env:
-        Configuration: Release
-    - name: Stop dotnet process
-      run: taskkill /F /IM dotnet.exe
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: windows-build-${{ github.run_id }}
-        path: "**/bin/Release/net8.0/win-x64/publish/"
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      if: github.event_name == 'release'
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: "**/bin/Release/net8.0/win-x64/publish/*"
-        asset_name: release-windows.zip
-        asset_content_type: application/zip
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Publish application
+        run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime win-x64
+        env:
+          Configuration: Release
+
+      - name: Stop dotnet process
+        run: taskkill /F /IM dotnet.exe
+
+      - name: Archive Windows build output
+        run: |
+          $publishPath = Resolve-Path "**\bin\Release\net8.0\win-x64\publish\"
+          if (-Not (Test-Path $publishPath)) {
+            Write-Error "Publish folder not found: $publishPath"
+            exit 1
+          }
+          Compress-Archive -Path "$publishPath\*" -DestinationPath release-windows.zip
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build-${{ github.run_id }}
+          path: "**/bin/Release/net8.0/win-x64/publish/"
+
+      - name: Upload Release Asset (Windows)
+        uses: actions/upload-release-asset@v1
+        if: github.event_name == 'release'
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: release-windows.zip
+          asset_name: release-windows.zip
+          asset_content_type: application/zip
 
   build-ubuntu:
     runs-on: ubuntu-latest
     env:
       Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
-    - name: Publish application
-      run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime linux-x64
-      env:
-        Configuration: Release
-    - name: Stop dotnet process
-      run: killall dotnet
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ubuntu-build-${{ github.run_id }}
-        path: "**/bin/Release/net8.0/linux-x64/publish/"
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      if: github.event_name == 'release'
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: "**/bin/Release/net8.0/linux-x64/publish/*"
-        asset_name: release-ubuntu.zip
-        asset_content_type: application/zip
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Publish application
+        run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime linux-x64
+        env:
+          Configuration: Release
+
+      - name: Stop dotnet process
+        run: killall dotnet || true
+
+      - name: Archive Ubuntu build output
+        run: zip -r release-ubuntu.zip **/bin/Release/net8.0/linux-x64/publish/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-build-${{ github.run_id }}
+          path: "**/bin/Release/net8.0/linux-x64/publish/"
+
+      - name: Upload Release Asset (Ubuntu)
+        uses: actions/upload-release-asset@v1
+        if: github.event_name == 'release'
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: release-ubuntu.zip
+          asset_name: release-ubuntu.zip
+          asset_content_type: application/zip
 
   build-macos:
     runs-on: macos-latest
     env:
       Project_Path: SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
-    - name: Publish application
-      run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime osx-x64
-      env:
-        Configuration: Release
-    - name: Stop dotnet process
-      run: pkill dotnet
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: macos-build-${{ github.run_id }}
-        path: "**/bin/Release/net8.0/osx-x64/publish/"
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      if: github.event_name == 'release'
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: "**/bin/Release/net8.0/osx-x64/publish/*"
-        asset_name: release-macos.zip
-        asset_content_type: application/zip
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Publish application
+        run: dotnet publish ${{ env.Project_Path }} -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime osx-x64
+        env:
+          Configuration: Release
+
+      - name: Stop dotnet process
+        run: pkill dotnet || true
+
+      - name: Archive macOS build output
+        run: zip -r release-macos.zip **/bin/Release/net8.0/osx-x64/publish/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build-${{ github.run_id }}
+          path: "**/bin/Release/net8.0/osx-x64/publish/"
+
+      - name: Upload Release Asset (macOS)
+        uses: actions/upload-release-asset@v1
+        if: github.event_name == 'release'
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: release-macos.zip
+          asset_name: release-macos.zip
+          asset_content_type: application/zip

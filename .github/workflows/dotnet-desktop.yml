@@ -9,13 +9,12 @@ on:
     types: [created]
 
 jobs:
-
   build:
-
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
         configuration: [Release]
+        runtime: [win-x64, linux-x64, osx-x64]
 
     runs-on: ${{ matrix.os }}
 

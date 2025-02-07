@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      Project_Name: SoftwareCopyrightSourceCodeCollector.Desktop.csproj
+      Project_Name: SoftwareCopyrightSourceCodeCollector.sln
 
     steps:
     - name: Checkout

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector", "SoftwareCopyrightSourceCodeCollector.csproj", "{C1DA9AB7-D12A-4FB5-ACB4-79DB9E505196}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector", "SoftwareCopyrightSourceCodeCollector\SoftwareCopyrightSourceCodeCollector.csproj", "{C1DA9AB7-D12A-4FB5-ACB4-79DB9E505196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector.Desktop", "..\SoftwareCopyrightSourceCodeCollector.Desktop\SoftwareCopyrightSourceCodeCollector.Desktop.csproj", "{35CF2D0B-5971-94A7-F7F2-08AD582CA420}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector.Desktop", "SoftwareCopyrightSourceCodeCollector.Desktop\SoftwareCopyrightSourceCodeCollector.Desktop.csproj", "{35CF2D0B-5971-94A7-F7F2-08AD582CA420}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

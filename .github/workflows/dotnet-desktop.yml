@@ -51,8 +51,8 @@ jobs:
           path: "**/bin/Release/net8.0/win-x64/publish/"
 
       - name: Upload Release Asset (Windows)
-        uses: actions/upload-release-asset@v1
         if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: release-windows.zip
@@ -92,8 +92,8 @@ jobs:
           path: "**/bin/Release/net8.0/linux-x64/publish/"
 
       - name: Upload Release Asset (Ubuntu)
-        uses: actions/upload-release-asset@v1
         if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: release-ubuntu.zip
@@ -133,8 +133,8 @@ jobs:
           path: "**/bin/Release/net8.0/osx-x64/publish/"
 
       - name: Upload Release Asset (macOS)
-        uses: actions/upload-release-asset@v1
         if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: release-macos.zip

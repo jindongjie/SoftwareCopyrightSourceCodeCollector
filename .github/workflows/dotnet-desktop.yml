@@ -5,6 +5,8 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  release:
+    types: [created]
 
 jobs:
 
@@ -37,10 +39,19 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Upload build artifacts
-  uses: actions/upload-artifact@v4
-  with:
-    name: ${{ matrix.os }}-build-${{ matrix.configuration }}-${{ github.run_id }}
-    path: |
-      **/bin/${{ matrix.configuration }}/net8.0/win-x64/publish/
-      **/bin/${{ matrix.configuration }}/net8.0/linux-x64/publish/
-      **/bin/${{ matrix.configuration }}/net8.0/osx-x64/publish/
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.os }}-build-${{ matrix.configuration }}-${{ github.run_id }}
+        path: |
+          **/bin/${{ matrix.configuration }}/net8.0/win-x64/publish/
+          **/bin/${{ matrix.configuration }}/net8.0/linux-x64/publish/
+          **/bin/${ matrix.configuration }}/net8.0/osx-x64/publish/
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      if: github.event_name == 'release'
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: **/bin/${{ matrix.configuration }}/net8.0/${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'ubuntu-latest' && 'linux-x64' || 'osx-x64' }}/publish/
+        asset_name: release-${{ matrix.os }}.zip
+        asset_content_type: application/zip

@@ -29,11 +29,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
-
-    - name: Setup MSBuild on Windows
-      if: runner.os == 'Windows'
-      uses: microsoft/setup-msbuild@v2
+        dotnet-version: 9.0.x
 
     - name: Publish application
       run: dotnet publish ${{ env.Project_Path }} -c ${{ matrix.configuration }} --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'ubuntu-latest' && 'linux-x64' || 'osx-x64' }}

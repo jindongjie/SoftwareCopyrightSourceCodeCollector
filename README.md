@@ -16,6 +16,16 @@
 - **DocumentFormat.OpenXml**: Word 文档处理
 - **Semi.Avalonia**: UI 主题组件库
 
+## 安装方法
+1. **通过 github release**
+   - 点击右侧边栏的资源
+   - 下载栏找到最新一次的发布资源
+   - 根据操作系统自行下载对应的软件
+   - 目前支持x86-64架构的自动编译，其他架构请自行编译
+2. **手动编译**
+   - 克隆该项目到本地
+   - 使用 ``` dotnet publish SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ```(自己的架构例如(win-x64/linux-x64/osx-x64）
+   
 ## 主要功能
 
 1. **源代码收集**

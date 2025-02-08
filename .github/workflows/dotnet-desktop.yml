@@ -77,6 +77,8 @@ jobs:
       - name: Upload Release Asset (Windows)
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: release-windows.zip
@@ -120,6 +122,8 @@ jobs:
       - name: Upload Release Asset (Ubuntu)
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: release-ubuntu.zip
@@ -173,6 +177,8 @@ jobs:
       - name: Upload Release Asset (macOS)
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: release-macos.zip

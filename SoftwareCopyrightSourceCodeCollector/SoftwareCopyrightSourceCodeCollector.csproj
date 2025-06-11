@@ -21,16 +21,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.2.3" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+    <PackageReference Include="Avalonia" Version="11.3.1" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.1" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
-    <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
     <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />
-    <PackageReference Include="Semi.Avalonia" Version="11.2.1.4" />
-    <PackageReference Include="Semi.Avalonia.TreeDataGrid" Version="11.0.10.1" />
+    <PackageReference Include="Semi.Avalonia" Version="11.2.1.8" />
+    <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.1.8" />
+    <PackageReference Include="Semi.Avalonia.TreeDataGrid" Version="11.0.10.4" />
   </ItemGroup>
 </Project>

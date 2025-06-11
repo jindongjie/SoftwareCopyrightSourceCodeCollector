@@ -40,7 +40,31 @@
 					</HeaderedContentControl.Content>
 				</HeaderedContentControl>
 
-				<TreeDataGrid Grid.Row="3" Source="{Binding SearchedFileItemsOriginalSource}" />
+				<!--文件列表-->
+				<DataGrid Grid.Row="3"
+                          ItemsSource="{Binding SearchedFileItemsOriginalCollection}"
+                          CanUserResizeColumns="True"
+                          CanUserReorderColumns="True"
+                          Margin="0 0 0 10"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          >
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="序号" Binding="{Binding OrderNumber}" Width="auto" SortMemberPath="OrderNumber"/>
+						<DataGridTextColumn Header="文件名" Binding="{Binding FileName}" Width="2*"/>
+						<DataGridTextColumn Header="路径" Binding="{Binding FilePath}" Width="*"/>
+						<DataGridTextColumn Header="代码量" Binding="{Binding CodeCount}" Width="*"/>
+						<DataGridTemplateColumn Header="操作" Width="Auto">
+							<DataGridTemplateColumn.CellTemplate>
+								<DataTemplate>
+									<Button Content="设为程序入口"
+                                            Command="{Binding SetAsProgramEntryCommand}" />
+								</DataTemplate>
+							</DataGridTemplateColumn.CellTemplate>
+						</DataGridTemplateColumn>
+					</DataGrid.Columns>
+
+				</DataGrid>
 
 
 				<StackPanel  Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Center">
@@ -53,8 +77,8 @@
 					<StackPanel Orientation="Horizontal" Spacing="5" Margin="0 0 0 10">
 						<TextBlock VerticalAlignment="Center">软件版本：</TextBlock>
 						<TextBox Text="{Binding SoftwareVersion}"  MaxWidth="500"  MinWidth="100"></TextBox>
-						<TextBlock VerticalAlignment="Center">前后保存页数(目前无效)：</TextBlock>
-						<TextBox Text="{Binding MaxPage}"  MaxWidth="500"  MinWidth="100"></TextBox>
+						<!--<TextBlock VerticalAlignment="Center">文档页数：</TextBlock>-->
+						<!--<TextBox Text="{Binding MaxPage}"  MaxWidth="500"  MinWidth="100"></TextBox>-->
 					</StackPanel>
 
 					<Button Content="导出docx" Command="{Binding ExportToDocxCommand}" />
@@ -62,10 +86,78 @@
 			</Grid>
 
 		</TabItem>
-		<TabItem Header="注册流程">
+		<TabItem Header="注意事项（*请阅读）">
 
 			<ScrollViewer>
 				<StackPanel Margin="20">
+
+					<!-- 代码材料要求 -->
+					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
+						<StackPanel>
+							<TextBlock FontWeight="Bold" Margin="0 0 0 5">代码材料要求</TextBlock>
+							<TextBlock FontWeight="Bold" Margin="0 5 0 5">一、代码内容要求</TextBlock>
+
+							<TextBlock TextWrapping="Wrap" Margin="5 0 0 5">
+								<Run FontWeight="Bold">起止位置：</Run>
+								<LineBreak/>
+								• 第一页：必须是程序入口代码（如main()函数、index页面、登录模块等）请手动调整文件顺序，保证第一份文件未程序入口
+
+							</TextBlock>
+
+							<TextBlock TextWrapping="Wrap" Margin="5 0 0 5">
+								<Run FontWeight="Bold">内容完整性：</Run>
+								<LineBreak/>
+								• 关联性：代码需体现软件说明书中的核心功能，避免提交无关代码
+								<LineBreak/>
+								• 原创性：删除第三方版权信息，避免雷同（版权中心启用查重机制）
+							</TextBlock>
+
+							<TextBlock TextWrapping="Wrap" Margin="5 0 0 5">
+								<Run FontWeight="Bold">代码量要求：</Run>
+								<LineBreak/>
+								• ≤3000行：提交全部代码（按每页50行排版）
+								<LineBreak/>
+								• ＞3000行：提交前30页 + 后30页（共60页），至少覆盖3500行核心代码（如果超过该值需手动删除，因为自动删除的效果我感到不太满意，如有需要请提交 issues)
+							</TextBlock>
+
+
+							<TextBlock FontWeight="Bold" Margin="0 5 0 5">二、排版格式规范(排版均已按要求生成)</TextBlock>
+
+							<TextBlock TextWrapping="Wrap" Margin="5 0 0 5">
+								<Run FontWeight="Bold">页面设置：</Run>
+								<LineBreak/>
+								• 纸张：A4（210mm × 297mm），纵向放置
+								<LineBreak/>
+								• 边距：上下左右各2.54cm（默认标准页边距）
+								<LineBreak/>
+								• 页眉：注明软件名称全称/简称+版本号（与申请表一致）
+								<LineBreak/>
+								• 页脚：标注页码，格式为"第X页/共Y页"
+							</TextBlock>
+
+							<TextBlock TextWrapping="Wrap" Margin="5 0 0 5">
+								<Run FontWeight="Bold">代码排版：</Run>
+								<LineBreak/>
+								• 字体：宋体或Times New Roman，字号建议小五（10.5磅）或五号（10磅）
+								<LineBreak/>
+								• 行数：每页至少50行（不含纯空白行），行距固定值10.5磅~11磅可调整
+								<LineBreak/>
+								• 对齐：左对齐，避免随意换行或断行
+							</TextBlock>
+
+
+							<TextBlock FontWeight="Bold" Margin="0 5 0 5">三、关键禁忌</TextBlock>
+
+							<TextBlock TextWrapping="Wrap" Margin="5 0 0 5">
+								• 禁止设计器代码：少提供或删除自动生成的冗余代码
+								<LineBreak/>
+								• 禁止空白填充：纯空白行不计入50行/页要求，最后一页可不足50行
+								<LineBreak/>
+								• 禁止抄袭雷同：与已登记代码重复率过高将直接驳回
+							</TextBlock>
+						</StackPanel>
+					</Border>
+
 					<!-- 申请须知 -->
 					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
 						<StackPanel>
@@ -110,6 +202,8 @@
 							</TextBlock>
 						</StackPanel>
 					</Border>
+
+
 
 					<!-- 办理流程 -->
 					<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Margin="0 0 0 15" Padding="10">
@@ -180,7 +274,6 @@
 				<Button Content="GitHub资料页" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/jindongjie"/>
 			</StackPanel>
 		</TabItem>
-		<TabItem Header="待开发..."></TabItem>
 	</TabControl>
 </UserControl>
 

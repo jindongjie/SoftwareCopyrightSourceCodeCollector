@@ -333,7 +333,7 @@ public partial class MainViewModel : ViewModelBase
                     var linePara = body.AppendChild(new Paragraph());
 
                     var paraProps = new ParagraphProperties(
-                        new SpacingBetweenLines() { Line = "20", LineRule = LineSpacingRuleValues.Auto }
+                        new SpacingBetweenLines() { Line = "180", LineRule = LineSpacingRuleValues.Auto }
                     );
                     linePara.Append(paraProps);
 

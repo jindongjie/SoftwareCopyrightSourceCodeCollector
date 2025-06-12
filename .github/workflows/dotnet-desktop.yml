@@ -111,7 +111,7 @@ jobs:
         run: killall dotnet || true
 
       - name: Archive Ubuntu Build Output
-        run: zip -r release-ubuntu.zip **/bin/Release/net8.0/linux-x64/publish/
+        run: zip -r release-Linux.zip **/bin/Release/net8.0/linux-x64/publish/
 
       - name: Upload Build Artifacts (Ubuntu)
         uses: actions/upload-artifact@v4

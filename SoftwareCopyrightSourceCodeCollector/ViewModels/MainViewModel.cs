@@ -331,10 +331,16 @@ public partial class MainViewModel : ViewModelBase
                     var sanitizedLine = new string(t.Where(c => !char.IsControl(c) || c == '\r' || c == '\n' || c == '\t').ToArray());
 
                     var linePara = body.AppendChild(new Paragraph());
+
+                    var paraProps = new ParagraphProperties(
+                        new SpacingBetweenLines() { Line = "20", LineRule = LineSpacingRuleValues.Auto }
+                    );
+                    linePara.Append(paraProps);
+
                     var lineRun = linePara.AppendChild(new Run());
                     lineRun.AppendChild(new Text($"{totalLineNumber}\t{sanitizedLine}"));
                     lineRun.RunProperties = new RunProperties(
-                        new FontSize() { Val = "14" },
+                        new FontSize() { Val = "10" },
                         new RunFonts() { Ascii = "Times New Roman", HighAnsi = "Times New Roman" }
                     );
                     totalLineNumber++;

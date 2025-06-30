@@ -1,4 +1,4 @@
-# 软件著作权源代码收集器 [![.NET Core Desktop](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml) [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=jindongjie_SoftwareCopyrightSourceCodeCollector)
+# 软件著作权源代码收集器 [![.NET Core Desktop](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jindongjie_SoftwareCopyrightSourceCodeCollector&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jindongjie_SoftwareCopyrightSourceCodeCollector) [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=jindongjie_SoftwareCopyrightSourceCodeCollector)
 
 ## 项目简介
 

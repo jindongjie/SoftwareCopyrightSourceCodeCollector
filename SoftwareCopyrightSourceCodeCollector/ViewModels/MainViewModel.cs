@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -483,6 +484,277 @@ public partial class MainViewModel : ViewModelBase
             var box = MessageBoxManager
                 .GetMessageBoxStandard("错误", "无法打开网址：" + ex.Message);
             box.ShowAsync();
+        }
+    }
+
+
+    [ObservableProperty]
+    private string _softwareFullName = string.Empty;
+
+    [ObservableProperty]
+    private string _softwareShortName = string.Empty;
+
+    [ObservableProperty]
+    private string _softwareVersionNumber = "V1.0";
+
+    [ObservableProperty]
+    private ComboBoxItem _softwareCategory;
+
+    [ObservableProperty]
+    private string? _developmentFinishDate;
+
+    [ObservableProperty]
+    private ComboBoxItem _developmentMethod;
+
+    [ObservableProperty]
+    private string _softwareDescription = string.Empty;
+
+    [ObservableProperty]
+    private ComboBoxItem _publishStatus;
+
+    [ObservableProperty]
+    private string _copyrightOwner = string.Empty;
+
+    [ObservableProperty]
+    private ComboBoxItem _rightsScope;
+
+    [ObservableProperty]
+    private ComboBoxItem _rightsAcquisitionMethod;
+
+    [ObservableProperty]
+    private string _developmentHardwareEnvironment = string.Empty;
+
+    [ObservableProperty]
+    private string _runtimeHardwareEnvironment = string.Empty;
+
+    [ObservableProperty]
+    private string _developmentOS = string.Empty;
+
+    [ObservableProperty]
+    private string _developmentTool = string.Empty;
+
+    [ObservableProperty]
+    private string _runtimePlatform = string.Empty;
+
+    [ObservableProperty]
+    private string _runtimeSupportSoftware = string.Empty;
+
+    [ObservableProperty]
+    private ComboBoxItem _programmingLanguage;
+
+    [ObservableProperty]
+    private string _programmingLanguageOther = string.Empty;
+
+
+    [ObservableProperty]
+    private string _sourceCodeAmount = string.Empty;
+
+    [ObservableProperty]
+    private string _developmentPurpose = string.Empty;
+
+    [ObservableProperty]
+    private string _targetIndustry = string.Empty;
+
+    [ObservableProperty]
+    private bool _isAppSoftware;
+
+    [ObservableProperty]
+    private bool _isGameSoftware;
+
+    [ObservableProperty]
+    private bool _isEducationSoftware;
+
+    [ObservableProperty]
+    private bool _isFinanceSoftware;
+
+    [ObservableProperty]
+    private bool _isMedicalSoftware;
+
+    [ObservableProperty]
+    private bool _isGISSoftware;
+
+    [ObservableProperty]
+    private bool _isCloudSoftware;
+
+    [ObservableProperty]
+    private bool _isSecuritySoftware;
+
+    [ObservableProperty]
+    private bool _isBigDataSoftware;
+
+    [ObservableProperty]
+    private bool _isAISoftware;
+
+    [ObservableProperty]
+    private bool _isVRSoftware;
+
+    [ObservableProperty]
+    private bool _is5GSoftware;
+
+    [ObservableProperty]
+    private bool _isMiniProgramSoftware;
+
+    [ObservableProperty]
+    private bool _isSmartCitySoftware;
+    [ObservableProperty]
+    private bool _isIoTSoftware;
+
+    [ObservableProperty]
+    private bool _isIndustrialControlSoftware;
+
+    [ObservableProperty]
+    private string _mainFunctions = string.Empty;
+
+    [ObservableProperty]
+    private string _technicalFeatures = string.Empty;
+
+    [RelayCommand]
+    private async Task ExportApplicationTXT()
+    {
+        if (SoftwareFullName == "")
+        {
+            await MessageBoxManager.GetMessageBoxStandard("导出报错", "软件全名不能为空！").ShowAsync();
+            return;
+        }
+
+        if (SoftwareVersionNumber == "")
+        {
+            await MessageBoxManager.GetMessageBoxStandard("导出报错", "取得方式不能为空！").ShowAsync();
+            return;
+        }
+
+        if (SourceCodeAmount == "")
+        {
+            await MessageBoxManager.GetMessageBoxStandard("导出报错", "程序行数不能为空！").ShowAsync();
+            return;
+        }
+        if (MainFunctions == "")
+        {
+            await MessageBoxManager.GetMessageBoxStandard("导出报错", "主要功能不能为空！").ShowAsync();
+            return;
+        }
+
+        var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        if (mainWindow == null)
+            return;
+
+        var savePicker = await mainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "导出为 TXT 文件",
+            FileTypeChoices = [new FilePickerFileType("Text File") { Patterns = ["*.txt"] }],
+            DefaultExtension = "txt"
+        });
+
+        if (savePicker == null)
+            return;
+        
+
+        var lines = new List<string>
+        {
+            "╔════════════════════════════════════════════════════════════════════════════╗",
+            "║                            软件著作权登记信息                                 ║",
+            "╚════════════════════════════════════════════════════════════════════════════╝",
+            "",
+            "【软件全称】",
+            $"{SoftwareFullName}",
+            "",
+            "【软件简称】",
+            $"{SoftwareShortName}",
+            "",
+            "【版本号】",
+            $"{SoftwareVersionNumber}",
+            "",
+            "【权利取得方式】",
+            $"{RightsAcquisitionMethod.Content}",
+            "",
+            "【权利范围】",
+            $"{RightsScope.Content}",
+            "",
+            "【软件分类】",
+            $"{SoftwareCategory.Content}",
+            "",
+            "【开发方式】",
+            $"{DevelopmentMethod.Content}",
+            "",
+            "【开发完成日期】",
+            $"{(DevelopmentFinishDate ?? "")}",
+            "",
+            "【发表状态】",
+            $"{PublishStatus.Content}",
+            "",
+            "【著作权人】",
+            $"{CopyrightOwner}",
+            "",
+            "【开发的硬件环境】",
+            $"{DevelopmentHardwareEnvironment}",
+            "",
+            "【运行的硬件环境】",
+            $"{RuntimeHardwareEnvironment}",
+            "",
+            "【开发该软件的操作系统】",
+            $"{DevelopmentOS}",
+            "",
+            "【软件开发环境/开发工具】",
+            $"{DevelopmentTool}",
+            "",
+            "【该软件的运行平台/操作系统】",
+            $"{RuntimePlatform}",
+            "",
+            "【软件运行支撑环境/支持软件】",
+            $"{RuntimeSupportSoftware}",
+            "",
+            "【编程语言】",
+            $"{ProgrammingLanguage.Content}" + (string.IsNullOrWhiteSpace(ProgrammingLanguageOther) ? "" : $" 手工填写： {ProgrammingLanguageOther}"),
+            "",
+            "【源程序量】",
+            $"{SourceCodeAmount}",
+            "",
+            "【开发目的】",
+            $"{DevelopmentPurpose}",
+            "",
+            "【面向行业/领域】",
+            $"{TargetIndustry}",
+            "",
+            "【软件的主要功能】",
+            MainFunctions,
+            "",
+            "【软件的技术特点】"
+        };
+        var techTags = new List<string>();
+        if (IsAppSoftware) techTags.Add("APP");
+        if (IsGameSoftware) techTags.Add("游戏软件");
+        if (IsEducationSoftware) techTags.Add("教育软件");
+        if (IsFinanceSoftware) techTags.Add("金融软件");
+        if (IsMedicalSoftware) techTags.Add("医疗软件");
+        if (IsGISSoftware) techTags.Add("地理信息软件");
+        if (IsCloudSoftware) techTags.Add("云计算软件");
+        if (IsSecuritySoftware) techTags.Add("信息安全软件");
+        if (IsBigDataSoftware) techTags.Add("大数据软件");
+        if (IsAISoftware) techTags.Add("人工智能软件");
+        if (IsVRSoftware) techTags.Add("VR软件");
+        if (Is5GSoftware) techTags.Add("5G软件");
+        if (IsMiniProgramSoftware) techTags.Add("小程序");
+        if (IsIoTSoftware) techTags.Add("物联网软件");
+        if (IsSmartCitySoftware) techTags.Add("智慧城市软件");
+        if (IsIndustrialControlSoftware) techTags.Add("工业控制软件");
+        if (techTags.Count > 0)
+            lines.Add("标签: " + string.Join(" | ", techTags));
+        if (!string.IsNullOrWhiteSpace(TechnicalFeatures))
+            lines.Add(TechnicalFeatures);
+        lines.Add("");
+
+        lines.Add("────────────────────────────────────────────────────────────────────────────");
+        lines.Add("温馨提示：请核对信息后直接在(https://register.ccopyright.com.cn/r11.html) 申请软著或存档。");
+        lines.Add("────────────────────────────────────────────────────────────────────────────");
+
+        try
+        {
+            await File.WriteAllLinesAsync(savePicker.Path.LocalPath, lines);
+            await MessageBoxManager.GetMessageBoxStandard("导出成功", "申报资料TXT文件已生成").ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            await MessageBoxManager.GetMessageBoxStandard("错误", $"导出TXT时出错：{ex.Message}").ShowAsync();
         }
     }
 }

@@ -268,11 +268,204 @@
 			</ScrollViewer>
 
 		</TabItem>
-		<TabItem Header="开发者链接">
-			<StackPanel Margin="20">
-				<TextBlock Text="Github链接" FontWeight="Bold" Margin="0 0 10 0"/>
-				<Button Content="GitHub资料页" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/jindongjie"/>
-			</StackPanel>
+
+		<TabItem Header="申请材料生成">
+			<ScrollViewer>
+				<StackPanel Margin="20" Spacing="10">
+					<TextBlock>该功能用于企业申报时给软著负责人员参考并存档</TextBlock>
+
+					<TextBlock Text="登记信息" FontWeight="Bold" FontSize="16" Margin="0 0 0 10"/>
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="权利取得方式：" Width="100" VerticalAlignment="Center"/>
+						<ComboBox SelectedItem="{Binding RightsAcquisitionMethod}" Width="300">
+							<ComboBoxItem Content="原始取得"/>
+							<ComboBoxItem Content="继受取得"/>
+						</ComboBox>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="软件全称：" Width="100" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding SoftwareFullName}" Width="300"
+                                 Watermark="请输入软件全称" MaxLength="100"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="软件简称：" Width="100" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding SoftwareShortName}" Width="300"
+                                 Watermark="请输入软件简称（如果没有不要填写）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="版本号：" Width="100" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding SoftwareVersionNumber}" Width="300"
+                                 Watermark="请输入版本号（如1.0.0）" MaxLength="20"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="权利范围：" Width="100" VerticalAlignment="Center"/>
+						<ComboBox SelectedItem="{Binding RightsScope}" Width="300">
+							<ComboBoxItem Content="全部权利"/>
+							<ComboBoxItem Content="部分权利"/>
+						</ComboBox>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="软件分类：" Width="100" VerticalAlignment="Center"/>
+						<ComboBox SelectedItem="{Binding SoftwareCategory}" Width="300">
+							<ComboBoxItem Content="应用软件"/>
+							<ComboBoxItem Content="嵌入式软件"/>
+							<ComboBoxItem Content="中间件"/>
+							<ComboBoxItem Content="操作系统"/>
+						</ComboBox>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="开发方式：" Width="100" VerticalAlignment="Center"/>
+						<ComboBox SelectedItem="{Binding DevelopmentMethod}" Width="300">
+							<ComboBoxItem Content="单独开发"/>
+							<ComboBoxItem Content="合作开发"/>
+							<ComboBoxItem Content="委托开发"/>
+							<ComboBoxItem Content="下达任务开发"/>
+						</ComboBox>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="开发完成日期：" Width="100" VerticalAlignment="Center"/>
+						<DatePicker SelectedDate="{Binding DevelopmentFinishDate}" Width="300"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="发表状态：" Width="100" VerticalAlignment="Center"/>
+						<ComboBox SelectedItem="{Binding PublishStatus}" Width="300">
+							<ComboBoxItem Content="未发表"/>
+							<ComboBoxItem Content="已发表"/>
+						</ComboBox>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="著作权人：" Width="100" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding CopyrightOwner}" Width="300"
+                                 Watermark="请输入著作权人名称" MaxLength="50"/>
+					</StackPanel>
+
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="开发的硬件环境：" Width="120" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding DevelopmentHardwareEnvironment}" AcceptsReturn="True" Height="40" Width="400" TextWrapping="Wrap"
+                                 Watermark="请输入开发硬件环境（最多50字符）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="运行的硬件环境：" Width="120" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding RuntimeHardwareEnvironment}" AcceptsReturn="True" Height="40" Width="400" TextWrapping="Wrap"
+                                 Watermark="请输入运行硬件环境（最多50字符）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="开发该软件的操作系统：" Width="150" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding DevelopmentOS}" Width="300"
+                                 Watermark="请输入开发操作系统（最多50字符）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="软件开发环境/开发工具：" Width="150" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding DevelopmentTool}" Width="300"
+                                 Watermark="请输入开发工具（最多50字符）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="该软件的运行平台/操作系统：" Width="170" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding RuntimePlatform}" Width="300"
+                                 Watermark="请输入运行平台/操作系统（最多50字符）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="软件运行支撑环境/支持软件：" Width="170" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding RuntimeSupportSoftware}" Width="300"
+                                 Watermark="请输入支持软件（最多50字符）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="编程语言：" Width="100" VerticalAlignment="Center"/>
+						<ComboBox SelectedItem="{Binding ProgrammingLanguage}" Width="300">
+							<ComboBoxItem Content="Assembly language"/>
+							<ComboBoxItem Content="C"/>
+							<ComboBoxItem Content="C#"/>
+							<ComboBoxItem Content="C++"/>
+							<ComboBoxItem Content="Delphi/Object Pascal"/>
+							<ComboBoxItem Content="Go"/>
+							<ComboBoxItem Content="HTML"/>
+							<ComboBoxItem Content="Java"/>
+							<ComboBoxItem Content="JavaScript"/>
+							<ComboBoxItem Content="MATLAB"/>
+							<ComboBoxItem Content="Objective-C"/>
+							<ComboBoxItem Content="PHP"/>
+							<ComboBoxItem Content="PL/SQL"/>
+							<ComboBoxItem Content="Perl"/>
+							<ComboBoxItem Content="Python"/>
+							<ComboBoxItem Content="R"/>
+							<ComboBoxItem Content="Ruby"/>
+							<ComboBoxItem Content="SQL"/>
+							<ComboBoxItem Content="Swift"/>
+							<ComboBoxItem Content="Visual Basic"/>
+							<ComboBoxItem Content="Visual Basic .Net"/>
+							<ComboBoxItem Content="其他"/>
+						</ComboBox>
+
+					</StackPanel>
+					<TextBox Text="{Binding ProgrammingLanguageOther}" Width="380"
+                                 Watermark="如未在上列找到相吻合的编程语言，请再此填写" MaxLength="120"/>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="源程序量：" Width="100" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding SourceCodeAmount}" Width="300"
+                                 Watermark="请输入源程序量（如：3500行，最多20字符）" MaxLength="20"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="开发目的：" Width="100" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding DevelopmentPurpose}" Width="400" MaxLength="50" TextWrapping="Wrap"
+                                 Watermark="请输入开发目的（最多50字符）"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal" Spacing="10">
+						<TextBlock Text="面向行业/领域：" Width="120" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding TargetIndustry}" Width="300"
+                                 Watermark="请输入行业/领域（最多50字符）" MaxLength="50"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Vertical" Spacing="5">
+						<TextBlock Text="软件的主要功能：" FontWeight="Bold"/>
+						<TextBox Text="{Binding MainFunctions}" AcceptsReturn="True" MinHeight="100" Margin="5" MaxLength="200" TextWrapping="Wrap"
+                                 Watermark="请输入主要功能（最多200字符）"/>
+					</StackPanel>
+
+					<StackPanel Orientation="Vertical" Spacing="5">
+						<TextBlock Text="软件的技术特点：" FontWeight="Bold"/>
+						<UniformGrid>
+							<CheckBox Content="APP" IsChecked="{Binding IsAppSoftware}"/>
+							<CheckBox Content="游戏软件" IsChecked="{Binding IsGameSoftware}"/>
+							<CheckBox Content="教育软件" IsChecked="{Binding IsEducationSoftware}"/>
+							<CheckBox Content="金融软件" IsChecked="{Binding IsFinanceSoftware}"/>
+							<CheckBox Content="医疗软件" IsChecked="{Binding IsMedicalSoftware}"/>
+							<CheckBox Content="地理信息软件" IsChecked="{Binding IsGISSoftware}"/>
+							<CheckBox Content="云计算软件" IsChecked="{Binding IsCloudSoftware}"/>
+							<CheckBox Content="信息安全软件" IsChecked="{Binding IsSecuritySoftware}"/>
+							<CheckBox Content="大数据软件" IsChecked="{Binding IsBigDataSoftware}"/>
+							<CheckBox Content="人工智能软件" IsChecked="{Binding IsAISoftware}"/>
+							<CheckBox Content="VR软件" IsChecked="{Binding IsVRSoftware}"/>
+							<CheckBox Content="5G软件" IsChecked="{Binding Is5GSoftware}"/>
+							<CheckBox Content="小程序" IsChecked="{Binding IsMiniProgramSoftware}"/>
+							<CheckBox Content="物联网软件" IsChecked="{Binding IsIoTSoftware}"/>
+							<CheckBox Content="智慧城市软件" IsChecked="{Binding IsSmartCitySoftware}"/>
+							<CheckBox Content="工业控制软件" IsChecked="{Binding IsIndustrialControlSoftware}"/>
+						</UniformGrid>
+						<TextBox AcceptsReturn="True" Margin="5" TextWrapping="Wrap" MinHeight="70" Text="{Binding TechnicalFeatures}"
+                                 Watermark="请输入技术特点（最多100字符）" MaxLength="100"/>
+						<Button Command="{Binding ExportApplicationTXTCommand}">导出txt</Button>
+					</StackPanel>
+				</StackPanel>
+			</ScrollViewer>
 		</TabItem>
 	</TabControl>
 </UserControl>

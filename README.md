@@ -1,31 +1,24 @@
-# 软件著作权源代码收集器 [![.NET Core Desktop](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml)
+# 软件著作权源代码收集器 [![.NET Core Desktop](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/jindongjie/SoftwareCopyrightSourceCodeCollector/actions/workflows/dotnet-desktop.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jindongjie_SoftwareCopyrightSourceCodeCollector&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jindongjie_SoftwareCopyrightSourceCodeCollector) [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=jindongjie_SoftwareCopyrightSourceCodeCollector)
 
 ## 项目简介
 
-这是一个基于 Avalonia UI 框架开发的跨平台桌面应用程序，完全开源，用于帮助开发者快速收集和整理软件著作权申请所需的源代码文档，适用操作系统(Windows/Linux/MacOS)。
+这是一个基于 Avalonia UI 框架开发的跨平台桌面应用程序，无需依赖、完全开源，用于帮助开发者快速收集和整理软件著作权申请所需的源代码文档，适用操作系统(Windows/Linux/MacOS)。
 
 注明：本软件在作者 Windows11 系统，Linux系统（wayland图形后端）上测试过，MacOS尚未测试，若能运行，麻烦说一声
 ## 软件界面预览
 
 ![软件主界面截图](./swscc-gif-jpeg/1.png)
 
-## 技术框架
-
-- **.NET 8.0**: 基础开发框架
-- **Avalonia UI 11.2.3**: 跨平台 UI 框架
-- **CommunityToolkit.Mvvm**: MVVM 架构支持
-- **DocumentFormat.OpenXml**: Word 文档处理
-- **Semi.Avalonia**: UI 主题组件库
-
 ## 安装方法
 1. **通过 github release**
-   - 点击右侧边栏的资源
-   - 下载栏找到最新一次的发布资源
-   - 根据操作系统自行下载对应的软件
+   1.1 点击右侧边栏的资源
+   1.2 下载栏找到最新一次的发布资源
+   1.3 根据操作系统自行下载对应的软件
+   1.4 直接运行即可
    - 目前支持x86-64架构的自动编译，其他架构请自行编译
 2. **手动编译**
-   - 克隆该项目到本地
-   - 使用 ``` dotnet publish SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ```(自己的架构例如(win-x64/linux-x64/osx-x64）
+   2.1 克隆该项目到本地
+   2.2 使用 ``` dotnet publish SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSourceCodeCollector.Desktop.csproj -c Release --self-contained true /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=false --runtime ```(自己的架构例如(win-x64/linux-x64/osx-x64）
    
 ## 主要功能
 
@@ -66,3 +59,11 @@
 ## 使用演示
 
 ![使用演示](./swscc-gif-jpeg/exsample.gif)
+
+## 技术框架
+
+- **.NET 8.0**: 基础开发框架
+- **Avalonia UI 11.2.3**: 跨平台 UI 框架
+- **CommunityToolkit.Mvvm**: MVVM 架构支持
+- **DocumentFormat.OpenXml**: Word 文档处理
+- **Semi.Avalonia**: UI 主题组件库

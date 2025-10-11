@@ -272,7 +272,7 @@
 		<TabItem Header="申请材料生成">
 			<ScrollViewer>
 				<StackPanel Margin="20" Spacing="10">
-					<TextBlock>该功能用于企业申报时给软著负责人员参考并存档</TextBlock>
+					<TextBlock>该功能用于企业申报时给软著负责人员参考并存档,填写时注意字符数量上下限</TextBlock>
 
 					<TextBlock Text="登记信息" FontWeight="Bold" FontSize="16" Margin="0 0 0 10"/>
 					<StackPanel Orientation="Horizontal" Spacing="10">
@@ -362,13 +362,13 @@
 					</StackPanel>
 
 					<StackPanel Orientation="Horizontal" Spacing="10">
-						<TextBlock Text="开发该软件的操作系统：" Width="150" VerticalAlignment="Center"/>
+						<TextBlock Text="开发该软件的操作系统：" Width="160" VerticalAlignment="Center"/>
 						<TextBox Text="{Binding DevelopmentOS}" Width="300"
                                  Watermark="请输入开发操作系统（最多50字符）" MaxLength="50"/>
 					</StackPanel>
 
 					<StackPanel Orientation="Horizontal" Spacing="10">
-						<TextBlock Text="软件开发环境/开发工具：" Width="150" VerticalAlignment="Center"/>
+						<TextBlock Text="软件开发环境/开发工具：" Width="160" VerticalAlignment="Center"/>
 						<TextBox Text="{Binding DevelopmentTool}" Width="300"
                                  Watermark="请输入开发工具（最多50字符）" MaxLength="50"/>
 					</StackPanel>
@@ -425,19 +425,19 @@
 					<StackPanel Orientation="Horizontal" Spacing="10">
 						<TextBlock Text="开发目的：" Width="100" VerticalAlignment="Center"/>
 						<TextBox Text="{Binding DevelopmentPurpose}" Width="400" MaxLength="50" TextWrapping="Wrap"
-                                 Watermark="请输入开发目的（最多50字符）"/>
+                                 Watermark="请输入开发目的（最少8字符 最多50字符）"/>
 					</StackPanel>
 
 					<StackPanel Orientation="Horizontal" Spacing="10">
 						<TextBlock Text="面向行业/领域：" Width="120" VerticalAlignment="Center"/>
 						<TextBox Text="{Binding TargetIndustry}" Width="300"
-                                 Watermark="请输入行业/领域（最多50字符）" MaxLength="50"/>
+                                 Watermark="请输入行业/领域（最少4字符 最多50字符）" MaxLength="50"/>
 					</StackPanel>
 
 					<StackPanel Orientation="Vertical" Spacing="5">
 						<TextBlock Text="软件的主要功能：" FontWeight="Bold"/>
 						<TextBox Text="{Binding MainFunctions}" AcceptsReturn="True" MinHeight="100" Margin="5" MaxLength="200" TextWrapping="Wrap"
-                                 Watermark="请输入主要功能（最多200字符）"/>
+                                 Watermark="请输入主要功能（最少 100字符 最多200字符）"/>
 					</StackPanel>
 
 					<StackPanel Orientation="Vertical" Spacing="5">
@@ -461,7 +461,7 @@
 							<CheckBox Content="工业控制软件" IsChecked="{Binding IsIndustrialControlSoftware}"/>
 						</UniformGrid>
 						<TextBox AcceptsReturn="True" Margin="5" TextWrapping="Wrap" MinHeight="70" Text="{Binding TechnicalFeatures}"
-                                 Watermark="请输入技术特点（最多100字符）" MaxLength="100"/>
+                                 Watermark="请输入技术特点（最少 50字符 最多100字符）" MaxLength="100"/>
 						<Button Command="{Binding ExportApplicationTXTCommand}">导出txt</Button>
 					</StackPanel>
 				</StackPanel>

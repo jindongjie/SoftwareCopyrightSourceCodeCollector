@@ -634,6 +634,24 @@ public partial class MainViewModel : ViewModelBase
             return;
         }
 
+        if (DevelopmentPurpose.Length < 8)
+        {
+            await MessageBoxManager.GetMessageBoxStandard("导出报错", "开发目的至少需要8字").ShowAsync();
+            return;
+        }
+
+        if (TargetIndustry.Length < 4)
+        {
+            await MessageBoxManager.GetMessageBoxStandard("导出报错", "目标领域/行业至少需要4字").ShowAsync();
+            return;
+        }
+
+        if (MainFunctions.Length < 100)
+        {
+            await MessageBoxManager.GetMessageBoxStandard("导出报错", "主要功能至少需要100字").ShowAsync();
+            return;
+        }
+
         var mainWindow = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
         if (mainWindow == null)
             return;

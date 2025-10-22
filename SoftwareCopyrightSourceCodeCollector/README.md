@@ -2,7 +2,7 @@
 
 ### 前提条件
 
-- .NET 8 SDK
+- .NET 9 SDK
 - 一个 IDE，如 Visual Studio
 
 

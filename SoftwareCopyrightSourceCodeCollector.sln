@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoftwareCopyrightSourceCode
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector.Console", "SoftwareCopyrightSourceCodeCollector.Console\SoftwareCopyrightSourceCodeCollector.Console.csproj", "{5AE23422-4BE6-4B90-BEB9-694108AC5052}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLib", "CoreLib\CoreLib.csproj", "{57AAF46D-4584-4CB3-AC16-DF998A960FE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5AE23422-4BE6-4B90-BEB9-694108AC5052}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE23422-4BE6-4B90-BEB9-694108AC5052}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE23422-4BE6-4B90-BEB9-694108AC5052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57AAF46D-4584-4CB3-AC16-DF998A960FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57AAF46D-4584-4CB3-AC16-DF998A960FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57AAF46D-4584-4CB3-AC16-DF998A960FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57AAF46D-4584-4CB3-AC16-DF998A960FE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

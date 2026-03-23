@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>SoftwareCopyrightSourceCodeCollector.Console</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SoftwareCopyrightSourceCodeCollector.CoreLib\SoftwareCopyrightSourceCodeCollector.CoreLib.csproj" />
+  </ItemGroup>
+</Project>

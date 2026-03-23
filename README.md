@@ -27,6 +27,7 @@ dotnet publish SoftwareCopyrightSourceCodeCollector.Desktop/SoftwareCopyrightSou
 - 源代码收集
   - 选择目标文件夹
   - 自定义文件类型筛选（如：cs;json;js;cpp 等）
+  - 支持文件夹排除，避免引入依赖库代码
   - 支持文件预览
   - 可设置程序入口文件
 - 文档导出

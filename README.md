@@ -14,6 +14,7 @@
 
 1) 通过 GitHub Release
    - 在右侧「Releases」下载最新版本（通过github平台编译，安全无毒，不要使用第三方镜像下载！！！且一定要校验文件，例如通过SHA256）
+   sha256 工具：https://www.strerr.com/cn/sha256_file.html
    - 按操作系统选择对应压缩包，下载后运行可执行文件
    - 目前提供 x86-64 架构的自动构建，其他架构请手动编译
 

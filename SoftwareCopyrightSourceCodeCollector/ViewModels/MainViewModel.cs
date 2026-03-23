@@ -13,6 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Extensions.FileSystemGlobbing;
 using MsBox.Avalonia;
 using SoftwareCopyrightSourceCodeCollector.ViewModels;
 
@@ -32,10 +33,14 @@ public partial class MainViewModel : ViewModelBase
         //展开文件选择列表
         var tempChoseFileType = ChoseFileType;
 
+        //后缀名筛选列表
         var endWithList = tempChoseFileType.Split(';')
             .Select(ext => ext.StartsWith('.') ? ext : "." + ext)
             .ToList();
 
+        //路径排除列表
+        var tempExcludeFiles = ExcludeFiles;
+        var pathExcludeList = tempExcludeFiles.Split(";");
         if (string.IsNullOrEmpty(SelectedFolder) || endWithList.Count == 0)
         {
             return;
@@ -43,12 +48,21 @@ public partial class MainViewModel : ViewModelBase
 
         try
         {
+            var matcher = new Matcher(StringComparison.OrdinalIgnoreCase);
+            foreach (var pattern in pathExcludeList)
+            {
+                matcher.AddInclude(pattern);
+            }
+
             var files = Directory.EnumerateFiles(SelectedFolder, "*", SearchOption.AllDirectories)
-                .Where(file => endWithList.Any(ext => file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
+                .Where(file =>
+                    endWithList.Any(ext => file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)) &&
+                    !IsExcluded(file, SelectedFolder, matcher))
                 .ToArray();
             //遍历所有文件，挨个添加
             var tasks = files.Select(file => Task.Run(() =>
             {
+
                 var searchedFileItem = new SearchedFileItem
                 {
                     FileName = Path.GetFileName(file),
@@ -78,6 +92,21 @@ public partial class MainViewModel : ViewModelBase
             await box.ShowAsync();
         }
     }
+
+    private static bool IsExcluded(string filePath, string rootFolder, Matcher matcher)
+    {
+        // Get the relative path (e.g., removes "C:\Users\Administrator\Desktop\chrome-win\")
+        string relativePath = Path.GetRelativePath(rootFolder, filePath);
+        
+        // Matcher requires forward slashes to evaluate glob patterns correctly
+        relativePath = relativePath.Replace("\\", "/");
+
+        // Evaluates against the pre-compiled patterns
+        PatternMatchingResult result = matcher.Match(relativePath);
+        
+        return result.HasMatches;
+    }
+
     //获取文件的代码数量
     private static int GetCodeCount(string file)
     {
@@ -140,6 +169,10 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     //文件类型字符串字段
     private string _choseFileType = "txt;docx";
+
+    [ObservableProperty]
+    // 排除文件字段
+    private string _excludeFiles = "";
 
     [ObservableProperty]
     //文件列表合集
@@ -665,7 +698,7 @@ public partial class MainViewModel : ViewModelBase
 
         if (savePicker == null)
             return;
-        
+
 
         var lines = new List<string>
         {

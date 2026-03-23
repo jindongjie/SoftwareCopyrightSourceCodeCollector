@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector", "SoftwareCopyrightSourceCodeCollector\SoftwareCopyrightSourceCodeCollector.csproj", "{C1DA9AB7-D12A-4FB5-ACB4-79DB9E505196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoftwareCopyrightSourceCodeCollector", "SoftwareCopyrightSourceCodeCollector\SoftwareCopyrightSourceCodeCollector.csproj", "{C1DA9AB7-D12A-4FB5-ACB4-79DB9E505196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector.Desktop", "SoftwareCopyrightSourceCodeCollector.Desktop\SoftwareCopyrightSourceCodeCollector.Desktop.csproj", "{35CF2D0B-5971-94A7-F7F2-08AD582CA420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoftwareCopyrightSourceCodeCollector.Desktop", "SoftwareCopyrightSourceCodeCollector.Desktop\SoftwareCopyrightSourceCodeCollector.Desktop.csproj", "{35CF2D0B-5971-94A7-F7F2-08AD582CA420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareCopyrightSourceCodeCollector.Console", "SoftwareCopyrightSourceCodeCollector.Console\SoftwareCopyrightSourceCodeCollector.Console.csproj", "{5AE23422-4BE6-4B90-BEB9-694108AC5052}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{35CF2D0B-5971-94A7-F7F2-08AD582CA420}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35CF2D0B-5971-94A7-F7F2-08AD582CA420}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35CF2D0B-5971-94A7-F7F2-08AD582CA420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE23422-4BE6-4B90-BEB9-694108AC5052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE23422-4BE6-4B90-BEB9-694108AC5052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE23422-4BE6-4B90-BEB9-694108AC5052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE23422-4BE6-4B90-BEB9-694108AC5052}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace SoftwareCopyrightSourceCodeCollector.CoreLib;
 
@@ -55,14 +56,34 @@ public static class Core
     /// matches any entry in <paramref name="extensions"/> and returns the
     /// resulting <see cref="FileItem"/> list (order numbers are pre-assigned).
     /// </summary>
-    public static async Task<List<FileItem>> ScanFilesAsync(string folder, IEnumerable<string> extensions)
+    /// <param name="folder">Root folder to scan.</param>
+    /// <param name="extensions">File extensions to include (e.g. "cs", ".ts").</param>
+    /// <param name="excludePatterns">
+    /// Optional glob patterns (e.g. "**.min.js", "src/**/obj/**") for files to exclude.
+    /// Uses the same syntax as <see cref="Matcher"/>.
+    /// </param>
+    public static async Task<List<FileItem>> ScanFilesAsync(
+        string folder,
+        IEnumerable<string> extensions,
+        IEnumerable<string>? excludePatterns = null)
     {
         var endWithList = extensions
             .Select(ext => ext.StartsWith('.') ? ext : "." + ext)
             .ToList();
 
+        Matcher? matcher = null;
+        var patternList = excludePatterns?.Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
+        if (patternList is { Count: > 0 })
+        {
+            matcher = new Matcher(StringComparison.OrdinalIgnoreCase);
+            foreach (var pattern in patternList)
+                matcher.AddInclude(pattern);
+        }
+
         var files = Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories)
-            .Where(file => endWithList.Any(ext => file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
+            .Where(file =>
+                endWithList.Any(ext => file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)) &&
+                (matcher == null || !IsExcluded(file, folder, matcher)))
             .ToArray();
 
         var tasks = files.Select(file => Task.Run(() => new FileItem
@@ -79,6 +100,13 @@ public static class Core
             results[i].OrderNumber = (i + 1).ToString();
 
         return results.ToList();
+    }
+
+    private static bool IsExcluded(string filePath, string rootFolder, Matcher matcher)
+    {
+        var relativePath = Path.GetRelativePath(rootFolder, filePath)
+            .Replace("\\", "/");
+        return matcher.Match(relativePath).HasMatches;
     }
 
     // ── DOCX export ───────────────────────────────────────────────────────────
@@ -226,7 +254,7 @@ public static class Core
 
     private static int GetDocxPageCount(WordprocessingDocument doc)
     {
-        var body = doc.MainDocumentPart?.Document.Body;
+        var body = doc.MainDocumentPart?.Document?.Body;
         if (body == null) return 1;
         var pageBreaks = body.Descendants<Break>().Count(b => b.Type?.Value == BreakValues.Page);
         return pageBreaks + 1;
@@ -234,7 +262,7 @@ public static class Core
 
     private static void RemoveMiddlePages(WordprocessingDocument doc, int keepFront, int keepEnd)
     {
-        var body = doc.MainDocumentPart?.Document.Body;
+        var body = doc.MainDocumentPart?.Document?.Body;
         if (body == null) return;
 
         var paragraphs = body.Elements<Paragraph>().ToList();

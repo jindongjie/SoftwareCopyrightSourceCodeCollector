@@ -30,10 +30,14 @@ public partial class MainViewModel : ViewModelBase
         //展开文件选择列表
         var tempChoseFileType = ChoseFileType;
 
+        //后缀名筛选列表
         var endWithList = tempChoseFileType.Split(';')
             .Select(ext => ext.StartsWith('.') ? ext : "." + ext)
             .ToList();
 
+        //路径排除列表
+        var tempExcludeFiles = ExcludeFiles;
+        var pathExcludeList = tempExcludeFiles.Split(";");
         if (string.IsNullOrEmpty(SelectedFolder) || endWithList.Count == 0)
         {
             return;
@@ -41,7 +45,7 @@ public partial class MainViewModel : ViewModelBase
 
         try
         {
-            var items = await Core.ScanFilesAsync(SelectedFolder, endWithList);
+            var items = await Core.ScanFilesAsync(SelectedFolder, endWithList, pathExcludeList);
             //遍历所有文件，挨个添加
             foreach (var item in items)
             {
@@ -97,6 +101,10 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     //文件类型字符串字段
     private string _choseFileType = "txt;docx";
+
+    [ObservableProperty]
+    // 排除文件字段
+    private string _excludeFiles = "";
 
     [ObservableProperty]
     //文件列表合集

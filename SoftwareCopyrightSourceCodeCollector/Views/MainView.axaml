@@ -25,6 +25,9 @@
 				<StackPanel  Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch"  Margin="0 0 0 10 ">
 					<TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center">文件类型(以英文分号分隔 例子“cs;json;js;cpp”)</TextBlock>
 					<TextBox Text="{Binding ChoseFileType}" Width="300"  HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2"/>
+					<TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center">排除文件(以英文分号分隔 例子“**.cs;src/**/include”)</TextBlock>
+					<TextBox Text="{Binding ExcludeFiles}" Width="300"  HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2"/>
+					
 					<Button Content="查询" Margin="5" Command="{Binding GetAllFilesCommand}"></Button>
 				</StackPanel>
 

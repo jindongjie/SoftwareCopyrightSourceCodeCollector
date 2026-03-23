@@ -67,6 +67,11 @@ class Program
             .Select(e => e.Trim())
             .Where(e => !string.IsNullOrEmpty(e));
 
+        var excludeInput = Prompt("排除路径（用 ; 分隔，支持 glob，例: **.min.js;bin/**，留空则不排除）", "");
+        var excludePatterns = string.IsNullOrWhiteSpace(excludeInput)
+            ? null
+            : (IEnumerable<string>)excludeInput.Split(';').Select(e => e.Trim()).Where(e => !string.IsNullOrEmpty(e));
+
         var softwareName = Prompt("软件名称");
         var softwareAuthor = Prompt("作者/版权所有者");
         var softwareVersion = Prompt("版本号", "V1.0");
@@ -80,7 +85,7 @@ class Program
         try
         {
             Con.WriteLine("正在扫描文件...");
-            var files = await Core.ScanFilesAsync(folder, extensions);
+            var files = await Core.ScanFilesAsync(folder, extensions, excludePatterns);
             Con.WriteLine($"共找到 {files.Count} 个文件，{files.Sum(f => Math.Max(f.CodeCount, 0))} 行代码。");
 
             if (files.Count == 0)

@@ -7,7 +7,6 @@
 
     <Application.Styles>
 		<semi:SemiTheme/>
-        <StyleInclude Source="avares://Semi.Avalonia.TreeDataGrid/Index.axaml" />
 		<StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
 	</Application.Styles>
 </Application>

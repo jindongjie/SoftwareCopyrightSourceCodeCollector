@@ -1,19 +1,7 @@
 name: .NET Core Desktop
 
 permissions:
-  actions: write
-  attestations: write
-  checks: write
   contents: write
-  deployments: write
-  discussions: write
-  issues: write
-  packages: write
-  pages: write
-  pull-requests: write
-  repository-projects: write
-  security-events: write
-  statuses: write
 
 on:
   push:
@@ -37,53 +25,54 @@ jobs:
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 8.0.x
 
       - name: Publish Application for Windows
         shell: pwsh
         run: |
-          $args = @(
-            $env:Project_Path,
-            "-c", "Release",
-            "--self-contained", "true",
-            "--runtime", "win-x64",
-            "--",
-            "-p:PublishSingleFile=true",
-            "-p:PublishReadyToRun=true",
-            "-p:PublishTrimmed=true"
-          )
-          dotnet publish @args
-
-      - name: Stop dotnet process
-        shell: pwsh
-        run: taskkill /F /IM dotnet.exe
+          dotnet publish $env:Project_Path `
+            -c Release `
+            --self-contained true `
+            --runtime win-x64 `
+            -p:PublishSingleFile=true `
+            -p:PublishReadyToRun=true `
+            -p:PublishTrimmed=true
 
       - name: Archive Windows Build Output
         shell: pwsh
         run: |
-          $publishPath = Resolve-Path "**\bin\Release\net8.0\win-x64\publish\"
-          if (-Not (Test-Path $publishPath)) {
-            Write-Error "Publish folder not found: $publishPath"
+          $publishDir = Get-ChildItem -Path . -Recurse -Directory -Filter "publish" |
+                        Where-Object { $_.FullName -match "win-x64" } |
+                        Select-Object -First 1 -ExpandProperty FullName
+          if (-Not $publishDir) {
+            Write-Error "Publish folder not found"
             exit 1
           }
-          Compress-Archive -Path "$publishPath\*" -DestinationPath release-windows.zip
+          Write-Host "Found publish directory: $publishDir"
+          Compress-Archive -Path "$publishDir\*" -DestinationPath release-windows.zip
+
+      - name: Generate Checksum (Windows)
+        shell: pwsh
+        run: |
+          $hash = Get-FileHash -Algorithm SHA256 release-windows.zip
+          "$($hash.Hash.ToLower())  release-windows.zip" | Out-File -Encoding utf8 release-windows.zip.sha256
+          Get-Content release-windows.zip.sha256
 
       - name: Upload Build Artifacts (Windows)
         uses: actions/upload-artifact@v4
         with:
           name: windows-build-${{ github.run_id }}
-          path: "**/bin/Release/net8.0/win-x64/publish/"
+          path: |
+            release-windows.zip
+            release-windows.zip.sha256
 
-      - name: Upload Release Asset (Windows)
+      - name: Upload Release Assets (Windows)
         if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: release-windows.zip
-          asset_name: release-windows.zip
-          asset_content_type: application/zip
+          files: |
+            release-windows.zip
+            release-windows.zip.sha256
 
   build-ubuntu:
     runs-on: ubuntu-latest
@@ -98,37 +87,48 @@ jobs:
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 8.0.x
 
       - name: Publish Application for Ubuntu
         run: |
-          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
-            /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=true --runtime linux-x64
-        env:
-          Configuration: Release
-
-      - name: Stop dotnet process
-        run: killall dotnet || true
+          dotnet publish ${{ env.Project_Path }} \
+            -c Release \
+            --self-contained true \
+            --runtime linux-x64 \
+            -p:PublishSingleFile=true \
+            -p:PublishReadyToRun=true \
+            -p:PublishTrimmed=true
 
       - name: Archive Ubuntu Build Output
-        run: zip -r release-Linux.zip **/bin/Release/net8.0/linux-x64/publish/
+        run: |
+          PUBLISH_DIR=$(find . -type d -path "*/bin/Release/net8.0/linux-x64/publish" | head -n 1)
+          if [ -z "$PUBLISH_DIR" ]; then
+            echo "Publish directory not found!" && exit 1
+          fi
+          echo "Found publish directory: $PUBLISH_DIR"
+          cd "$PUBLISH_DIR"
+          zip -r "$GITHUB_WORKSPACE/release-Linux.zip" .
+
+      - name: Generate Checksum (Ubuntu)
+        run: |
+          sha256sum release-Linux.zip > release-Linux.zip.sha256
+          cat release-Linux.zip.sha256
 
       - name: Upload Build Artifacts (Ubuntu)
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-build-${{ github.run_id }}
-          path: "**/bin/Release/net8.0/linux-x64/publish/"
+          path: |
+            release-Linux.zip
+            release-Linux.zip.sha256
 
-      - name: Upload Release Asset (Ubuntu)
+      - name: Upload Release Assets (Ubuntu)
         if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: release-Linux.zip
-          asset_name: release-Linux.zip
-          asset_content_type: application/zip
+          files: |
+            release-Linux.zip
+            release-Linux.zip.sha256
 
   build-macos:
     runs-on: macos-latest
@@ -143,44 +143,45 @@ jobs:
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 8.0.x
 
       - name: Publish Application for macOS
         run: |
-          dotnet publish ${{ env.Project_Path }} -c Release --self-contained true \
-            /p:PublishSingleFile=true /p:PublishReadyToRun=true /p:PublishTrimmed=true --runtime osx-x64
-        env:
-          Configuration: Release
+          dotnet publish ${{ env.Project_Path }} \
+            -c Release \
+            --self-contained true \
+            --runtime osx-x64 \
+            -p:PublishSingleFile=true \
+            -p:PublishReadyToRun=true \
+            -p:PublishTrimmed=true
 
-      - name: Stop dotnet process
-        run: pkill dotnet || true
-
-      - name: Archive macOS Build Output (Switch Directory)
+      - name: Archive macOS Build Output
         run: |
-          # Locate the publish directory; adjust the glob pattern if needed.
           PUBLISH_DIR=$(find . -type d -path "*/bin/Release/net8.0/osx-x64/publish" | head -n 1)
           if [ -z "$PUBLISH_DIR" ]; then
             echo "Publish directory not found!" && exit 1
           fi
-          echo "Publishing from directory: $PUBLISH_DIR"
+          echo "Found publish directory: $PUBLISH_DIR"
           cd "$PUBLISH_DIR"
-          # Create zip file at the root of the workspace; adjust path if necessary.
-          zip -r ../../../../release-macos.zip .
-          cp ../../../../release-macos.zip $GITHUB_WORKSPACE/release-macos.zip
+          zip -r "$GITHUB_WORKSPACE/release-macos.zip" .
+
+      - name: Generate Checksum (macOS)
+        run: |
+          shasum -a 256 release-macos.zip > release-macos.zip.sha256
+          cat release-macos.zip.sha256
 
       - name: Upload Build Artifacts (macOS)
         uses: actions/upload-artifact@v4
         with:
           name: macos-build-${{ github.run_id }}
-          path: "**/bin/Release/net8.0/osx-x64/publish/"
+          path: |
+            release-macos.zip
+            release-macos.zip.sha256
 
-      - name: Upload Release Asset (macOS)
+      - name: Upload Release Assets (macOS)
         if: github.event_name == 'release'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: release-macos.zip
-          asset_name: release-macos.zip
-          asset_content_type: application/zip
+          files: |
+            release-macos.zip
+            release-macos.zip.sha256
